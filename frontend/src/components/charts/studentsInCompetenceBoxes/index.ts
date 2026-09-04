@@ -1,0 +1,5 @@
+export { default as StudentsInCompetenceBoxes } from './StudentsInCompetenceBoxes.vue'
+export { default as CompetenceLevelBox } from './CompetenceLevelBox.vue'
+export { default as StudentIcon } from './StudentIcon.vue'
+export type { StudentsInCompetenceBoxesData, StudentsInCompetenceBoxesDomainData, CompetenceLevelBoxData, StudentIconData } from './types'
+export { mockStudentsInCompetenceBoxesData } from './mockData'

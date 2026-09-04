@@ -1,0 +1,35 @@
+<script setup lang="ts">
+import BaseButton from '@/components/base/BaseButton.vue'
+
+const props = defineProps<{ modelValue: boolean }>()
+const emit = defineEmits<{ 'update:modelValue': [value: boolean] }>()
+</script>
+
+<template>
+    <BaseButton
+        variant="secondary-outline"
+        size="sm"
+        :active="props.modelValue"
+        class="w-fit gap-2 print:hidden"
+        @click="emit('update:modelValue', !props.modelValue)"
+    >
+        <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke-width="1.5"
+            stroke="currentColor"
+            class="size-4 shrink-0"
+            aria-hidden="true"
+        >
+            <path
+                fill="currentColor"
+                d="M10 18q-.825 0-1.412-.587T8 16v-1.25q-1.425-.975-2.212-2.5T5 9q0-2.925 2.038-4.962T12 2t4.963 2.038T19 9q0 1.725-.788 3.238T16 14.75V16q0 .825-.587 1.413T14 18zm0-2h4v-1.775q0-.25.113-.475t.312-.35l.425-.3q1.025-.7 1.588-1.787T17 9q0-2.075-1.463-3.537T12 4T8.463 5.463T7 9q0 1.225.563 2.313T9.15 13.1l.425.3q.2.125.313.35t.112.475zm0 6q-.425 0-.712-.288T9 21t.288-.712T10 20h4q.425 0 .713.288T15 21t-.288.713T14 22zm2-13"
+                stroke-width="0.5"
+                stroke="currentColor"
+            />
+        </svg>
+        Interpretationshilfen: <span v-show="props.modelValue" class="uppercase">ein</span
+        ><span v-show="!props.modelValue" class="uppercase">aus</span>
+    </BaseButton>
+</template>

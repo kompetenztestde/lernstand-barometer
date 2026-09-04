@@ -1,0 +1,5 @@
+.gitlab-ci.yml
+.idea/
+.env
+ci-utils/
+node_modules/

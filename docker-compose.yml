@@ -1,0 +1,27 @@
+services:
+    frontend:
+        image: node:22-slim
+        working_dir: /app
+        command: sh -c "npm install && npm run dev"
+        ports:
+            - '5173:5173'
+        volumes:
+            - ./frontend:/app
+            - /app/node_modules
+        depends_on:
+            - backend
+        environment:
+            - NODE_ENV=development
+
+    backend:
+        build:
+            context: ./backend
+            dockerfile: Dockerfile.dev
+        volumes:
+            - ./backend:/app
+            - /app/node_modules
+        environment:
+            - NODE_ENV=development
+            - FRONTEND_URL=http://frontend:5173
+        stdin_open: true
+        tty: true

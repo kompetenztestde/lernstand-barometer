@@ -1,0 +1,78 @@
+@import 'tailwindcss';
+
+@keyframes navprogress {
+    0% {
+        transform: translateX(-100%);
+    }
+    100% {
+        transform: translateX(350%);
+    }
+}
+
+/* Hide donut segment labels on screen */
+.donut-print-label {
+    display: none;
+}
+
+@media print {
+    /* Scale down all rem-based sizes (Tailwind spacing, fonts, etc.) */
+    html {
+        font-size: 12px; /* default is 16px → 75% scale */
+    }
+
+    /* Hide Vite / Vue devtools injected UI */
+    #__vue-devtools-container__,
+    vite-plugin-vue-devtools {
+        display: none !important;
+    }
+
+    /* Show donut segment labels */
+    .donut-print-label {
+        display: initial;
+    }
+
+    /* Hide center value text and highlight layer */
+    .donut-center-text,
+    .highlight-layer {
+        display: none;
+    }
+}
+
+@theme static {
+    --color-primary: #005160;
+    --color-primary-dark: #00414d;
+    --color-primary-light: #006173;
+    --color-secondary: #600051;
+    --color-tertiary: #516000;
+    --color-quarternary: #657382;
+    --color-quinary: #865f43;
+    --color-interpretation: var(--color-secondary);
+    --color-surface-1: #fdfdfc;
+    --color-surface-2: #ffffff;
+
+    --color-competence-level-1: #afc2c7;
+    --color-competence-level-2: #88a4ac;
+    --color-competence-level-3: #628792;
+    --color-competence-level-4: #3a6c79;
+    --color-competence-level-5: #005160;
+
+    --color-excellent: #4169e1;
+    --color-excellent-darker: #213571;
+    --color-better: #82ca9d;
+    --color-better-darker: #68a27e;
+    --color-worse: #fff79a;
+    --color-worse-darker: #e6de8b;
+    --color-bad: #ee4266;
+    --color-bad-darker: #be3552;
+    --color-nodata: var(--color-gray-200);
+    --color-nodata-darker: var(--color-gray-300);
+
+    /* Breakpoints must me defined. The composable useBreakpoints can only read these breakpoints, if they are defined here. */
+    --breakpoint-sm: 40rem;
+    --breakpoint-md: 48rem;
+    --breakpoint-lg: 64rem;
+    --breakpoint-xl: 80rem;
+    --breakpoint-2xl: 96rem;
+    --breakpoint-3xl: 112rem;
+    --breakpoint-4xl: 128rem;
+}

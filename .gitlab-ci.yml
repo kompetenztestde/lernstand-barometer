@@ -1,0 +1,45 @@
+variables:
+  IMAGE_TAG: _multi_tba3_dk8
+
+stages:
+  - prepare
+  - build
+  - deploy
+
+prepare:
+  image: alpine:latest
+  stage: prepare
+  script:
+    - apk add git
+    - git clone https://oauth2:${CI_UTILS_TOKEN}@git.uni-jena.de/inio/source/kleine-projekte/ci-utils.git
+  artifacts:
+    paths:
+      - ci-utils/
+
+build-multiplatform:
+  stage: build
+  image: docker:latest
+  tags:
+    - docker_multiarch_build
+  services:
+    - docker:dind
+  variables:
+    DOCKER_HOST: "unix:///runner/services/docker/docker.sock"
+    CI_BUILD_ARG_KEYS: 'VITE_AUTH_API_URL VITE_TBA3_DATA_API_URL VITE_TEST_GROUP VITE_TEST_ID VITE_SURVEY_ID VITE_MATH_TEST_ID_A VITE_MATH_TEST_ID_B VITE_PDF_ENABLED FRONTEND_URL'
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "push" && $CI_COMMIT_BRANCH == "main"'
+  before_script:
+    - apk add bash
+    - ./ci-utils/scripts/prepare-docker-builder.sh
+  script:
+    - ./ci-utils/scripts/docker-multiarch-build.sh
+  after_script:
+    - ./ci-utils/scripts/shutdown-docker-builder.sh
+
+deploy:
+  stage: deploy
+  image:
+    name: bitnami/kubectl:latest
+    entrypoint: ['']
+  script:
+    - ./ci-utils/scripts/deploy-to-k8s.sh

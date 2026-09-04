@@ -1,0 +1,18 @@
+FROM node:22-slim
+
+# Install Firefox ESR from apt — no browser download needed at build time
+RUN apt-get update && apt-get install -y \
+    firefox-esr \
+    && rm -rf /var/lib/apt/lists/*
+
+# Tell puppeteer to use the system Firefox instead of a managed binary
+ENV PUPPETEER_EXECUTABLE_PATH=/usr/bin/firefox-esr
+
+WORKDIR /app
+
+COPY package*.json .puppeteerrc.cjs ./
+RUN PUPPETEER_SKIP_DOWNLOAD=true npm ci
+
+COPY . .
+
+CMD ["node", "index.js"]

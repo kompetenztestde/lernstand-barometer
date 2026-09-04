@@ -1,0 +1,10 @@
+<template>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true" class="size-4" v-bind="$attrs">
+        <path
+            fill="currentColor"
+            d="M20 4v12h3l-4 5l-4-5h3V4zm-8 14v2H3v-2zm2-7v2H3v-2zm0-7v2H3V4z"
+            stroke-width="0.5"
+            stroke="currentColor"
+        />
+    </svg>
+</template>

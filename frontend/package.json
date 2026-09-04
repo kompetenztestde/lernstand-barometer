@@ -1,0 +1,59 @@
+{
+    "name": "tba3-report-deutsch-8-tailwind",
+    "version": "0.8.4",
+    "private": true,
+    "type": "module",
+    "engines": {
+        "node": "^20.19.0 || >=22.12.0"
+    },
+    "scripts": {
+        "dev": "vite",
+        "build": "run-p type-check \"build-only {@}\" --",
+        "preview": "vite preview",
+        "test:unit": "vitest",
+        "build-only": "vite build",
+        "type-check": "vue-tsc --build",
+        "lint": "eslint . --fix",
+        "format": "prettier --write src/",
+        "compress-images": "node scripts/compress-images.mjs",
+        "prebuild": "node scripts/compress-images.mjs --check"
+    },
+    "dependencies": {
+        "@tailwindcss/vite": "^4.2.2",
+        "@tanstack/vue-query": "^5.96.2",
+        "canvas-confetti": "^1.9.4",
+        "d3": "^7.9.0",
+        "fflate": "^0.8.2",
+        "pinia": "^3.0.4",
+        "vue": "^3.5.32",
+        "vue-router": "^5.0.4",
+        "vue-tippy": "^6.7.1"
+    },
+    "devDependencies": {
+        "@tsconfig/node22": "^22.0.5",
+        "@types/canvas-confetti": "^1.9.0",
+        "@types/d3": "^7.4.3",
+        "@types/jsdom": "^28.0.1",
+        "@types/node": "^25.5.2",
+        "@vitejs/plugin-vue": "^6.0.5",
+        "@vitest/eslint-plugin": "^1.6.14",
+        "@vue/eslint-config-prettier": "^10.2.0",
+        "@vue/eslint-config-typescript": "^14.7.0",
+        "@vue/test-utils": "^2.4.6",
+        "@vue/tsconfig": "^0.9.1",
+        "eslint": "^10.2.0",
+        "eslint-plugin-vue": "~10.8.0",
+        "jiti": "^2.6.1",
+        "jsdom": "^29.0.2",
+        "npm-run-all2": "^8.0.4",
+        "prettier": "^3.8.1",
+        "prettier-plugin-tailwindcss": "^0.7.2",
+        "sharp": "^0.34.5",
+        "tailwindcss": "^4.2.2",
+        "typescript": "~6.0.2",
+        "vite": "^8.0.5",
+        "vite-plugin-vue-devtools": "^8.1.1",
+        "vitest": "^4.1.2",
+        "vue-tsc": "^3.2.6"
+    }
+}
