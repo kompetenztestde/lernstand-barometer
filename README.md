@@ -5,23 +5,28 @@
 Eine Webanwendung zur **Aufbereitung VerA-Ergebnisdaten von Schüler:innen**, um **Unterrichtsentwicklung** zu unterstützen.
 Das Projekt besteht aus einem **Vue 3 + Vite Frontend** und einem optionalen **Express.js Backend** für die PDF-Generierung.
 
+* [Technische Dokumentation](#technische-dokumentation)
+* [Inhaltliche Dokumentation](#inhaltliche-dokumentation)
+
 ---
 
-## Entwicklungsumgebung
+## Technische Dokumentation
 
-### Voraussetzungen
+### Entwicklungsumgebung
+
+#### Voraussetzungen
 
 - [Docker](https://www.docker.com/) ≥ 24
 - [Node.js](https://nodejs.org/) ≥ 20 (nur für lokale Entwicklung ohne Docker)
 
-### Einrichtung
+#### Einrichtung
 
 ```bash
 cp example.env .env
 # .env nach Bedarf anpassen (s. Abschnitt „Umgebungsvariablen")
 ```
 
-### Starten
+#### Starten
 
 ```bash
 # Development mit Hot Reload
@@ -31,7 +36,7 @@ docker compose up
 -   Frontend → [http://localhost:5173](http://localhost:5173)
 -   Backend → [http://localhost:3000](http://localhost:3000)
 
-### Production (exemplarisch)
+#### Production (exemplarisch)
 
 Das Prod-Deployment ist rein exemplarisch beigefügt und muss an die vorhandene Deployment-Architektur angepasst werden.
 
@@ -39,9 +44,9 @@ Relevante Dateien sind: `nginx.conf`, `Dockerfile`, `build.sh`, `gitlab-ci.yml`
 
 ---
 
-## Technologien & Bibliotheken
+### Technologien & Bibliotheken
 
-### Frontend
+#### Frontend
 
 -   [Vue 3](https://vuejs.org/) – JS-Framework, Composition-API
 -   [Vite](https://vitejs.dev/) – Dev-Build-Tool
@@ -50,14 +55,14 @@ Relevante Dateien sind: `nginx.conf`, `Dockerfile`, `build.sh`, `gitlab-ci.yml`
 -   [VueTippy](https://vue-tippy.netlify.app) – Tooltips
 -   [Canvas Confetti](https://www.kirilv.com/canvas-confetti/) - Konfetti Effekt in Schüler:innen-Bereich
 
-### Backend
+#### Backend
 
 -   [Express.js](https://expressjs.com/) – minimales Node.js-Webframework
 -   [Puppeteer](https://pptr.dev/) – Headless Firefox für PDF-Generierung
 
 ---
 
-## Projektstruktur
+### Projektstruktur
 
 ```
 .
@@ -75,7 +80,7 @@ Relevante Dateien sind: `nginx.conf`, `Dockerfile`, `build.sh`, `gitlab-ci.yml`
 -   **frontend/** → UI, Visualisierungen, User-Interaktion
 -   **backend/** → PDF-Erstellung via Headless Firefox (optional via Umgebungsvariable)
 
-### Frontend-Struktur
+#### Frontend-Struktur
 
 ```
 frontend/src/
@@ -87,7 +92,7 @@ frontend/src/
 ├── stores/            # Pinia-Stores
 ```
 
-### Chart-Struktur
+#### Chart-Struktur
 
 Jede Visualisierung lebt in einem **eigenen Unterordner** unter `frontend/src/components/charts/`:
 
@@ -130,11 +135,11 @@ Diese Trennung macht die Charts **unabhängig vom Backend** und damit einfach wi
 
 ---
 
-## PDF-Generierung
+### PDF-Generierung
 
 Das Backend stellt einen einzigen Endpunkt zur Verfügung, der eine Seite der Frontend-App mit einem headless Firefox-Browser öffnet und als A4-PDF zurückliefert.
 
-### Funktionsweise
+#### Funktionsweise
 
 1. Das Frontend sendet per `POST /api/print` (Vite-Proxy → `POST /print` am Backend) einen Request mit Auth-Daten und der gewünschten Seite.
 2. Das Backend startet einen Headless-Firefox-Tab via Puppeteer.
@@ -142,7 +147,7 @@ Das Backend stellt einen einzigen Endpunkt zur Verfügung, der eine Seite der Fr
 4. Das Backend wartet, bis alle Lade-Spinner (`[role="status"]`) verschwunden sind (max. 30 Sekunden).
 5. Die Seite wird als A4-PDF gerendert und als Datei-Download zurückgeliefert.
 
-### Unterstützte Seiten
+#### Unterstützte Seiten
 
 | `page`-Wert       | Seite                  | Benötigt `groupId` | Benötigt `studentCode` |
 |-------------------|------------------------|:------------------:|:----------------------:|
@@ -151,7 +156,7 @@ Das Backend stellt einen einzigen Endpunkt zur Verfügung, der eine Seite der Fr
 | `conference`      | Fachkonferenz          |                    |                        |
 | `self-evaluation` | Selbsteinschätzung     | ✓                  | ✓                      |
 
-### Request-Format
+#### Request-Format
 
 ```http
 POST /print
@@ -167,7 +172,7 @@ Content-Type: application/json
 }
 ```
 
-### Umgebungsvariablen (backend/.env)
+#### Umgebungsvariablen (backend/.env)
 
 | Variable                    | Standardwert              | Beschreibung                                             |
 |-----------------------------|---------------------------|----------------------------------------------------------|
@@ -175,7 +180,7 @@ Content-Type: application/json
 | `FRONTEND_URL`              | `http://localhost:5173`   | URL, die Puppeteer aufruft                               |
 | `PUPPETEER_EXECUTABLE_PATH` | _(leer)_                  | Pfad zum Firefox-Binary; wird im Docker-Image gesetzt    |
 
-### Feature-Flag im Frontend
+#### Feature-Flag im Frontend
 
 Die PDF-Funktion kann im Frontend deaktiviert werden, ohne das Backend zu stoppen. Dazu in `frontend/.env` setzen:
 
@@ -185,18 +190,18 @@ VITE_PDF_ENABLED=false
 
 Ist das Flag `false` oder nicht gesetzt, werden alle PDF-Buttons und die Seite „Berichte downloaden" ausgeblendet.
 
-### Firefox-Abhängigkeit
+#### Firefox-Abhängigkeit
 
 Das Backend setzt **Firefox** (Open-Source-Anforderung) statt Chromium ein. Im Docker-Image wird `firefox-esr` via `apt` installiert und der Pfad über `PUPPETEER_EXECUTABLE_PATH` übergeben. Lokal kann Puppeteer auch einen selbst verwalteten Firefox nutzen – dazu `PUPPETEER_SKIP_DOWNLOAD=false` setzen und `npx puppeteer browsers install firefox` ausführen.
 
-## Aufgabenbilder komprimieren
+### Aufgabenbilder komprimieren
 
 Aufgabenbilder werden in zwei Ordnern verwaltet:
 
 - `frontend/src/assets/images/item-images-originals/` – Quell-PNGs, im Repository gespeichert, werden nie verändert
 - `frontend/src/assets/images/item-images/` – konvertierte WebP-Dateien, werden von der App verwendet
 
-### Neue Bilder hinzufügen
+#### Neue Bilder hinzufügen
 
 Neue PNG-Dateien in `item-images-originals/` ablegen und dabei die Ordnerstruktur nach Jahr/Kohorte beibehalten (z.B. `item-images-originals/2026/dk8/`). Danach im `frontend/`-Ordner ausführen:
 
@@ -206,15 +211,17 @@ npm run compress-images
 
 Das Skript konvertiert alle PNGs aus `item-images-originals/`, für die noch kein passendes WebP in `item-images/` existiert. Bereits konvertierte Dateien werden übersprungen.
 
-### Kompressionsqualität ändern
+#### Kompressionsqualität ändern
 
 Den Wert `WEBP_QUALITY` am Anfang von `frontend/scripts/compress-images.mjs` anpassen. Beim nächsten Ausführen erkennt das Skript, dass der Wert vom zuletzt gespeicherten Wert in `item-images/.manifest.json` abweicht, löscht alle vorhandenen WebPs und verarbeitet alle Bilder neu.
 
-### Automatische Prüfung vor dem Build
+#### Automatische Prüfung vor dem Build
 
 `npm run build` prüft automatisch, ob alle Bilder konvertiert sind. Falls ein PNG in `item-images-originals/` kein WebP-Gegenstück hat – oder sich die Qualitätseinstellung geändert hat – schlägt der Build mit einer entsprechenden Fehlermeldung fehl. Mit `npm run compress-images` lässt sich das beheben.
 
 ---
+
+## Inhaltliche Dokumentation
 
 ## Lizenz
 
